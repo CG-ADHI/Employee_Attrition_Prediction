@@ -77,7 +77,7 @@ const Dashboard = () => {
   const [metrics, setMetrics] = useState({ total_employees: 1470, features: 35, models_deployed: 3 });
 
   useEffect(() => {
-    fetch('http://localhost:8000/api/dashboard')
+    fetch("https://employee-attrition-prediction-4-1xie.onrender.com/api/dashboard")
       .then(r => r.json())
       .then(d => { if (!d.error) setMetrics(d); })
       .catch(() => {});
