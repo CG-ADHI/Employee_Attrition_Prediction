@@ -63,29 +63,48 @@ const SelectField = ({ label, name, value, onChange, options }) => (
 );
 
 const INITIAL = {
-  Age: 32, Department: 'Research & Development', Gender: 'Male',
-  MonthlyIncome: 5000, OverTime: 'No', YearsAtCompany: 5,
-  WorkLifeBalance: 3, JobSatisfaction: 3, DistanceFromHome: 10,
-  JobRole: 'Research Scientist', BusinessTravel: 'Travel_Rarely',
-  Education: 3, EducationField: 'Life Sciences',
-  EnvironmentSatisfaction: 3, JobInvolvement: 3, JobLevel: 2,
-  MaritalStatus: 'Single', NumCompaniesWorked: 1,
-  PercentSalaryHike: 14, PerformanceRating: 3,
-  RelationshipSatisfaction: 3, StockOptionLevel: 0,
-  TotalWorkingYears: 8, TrainingTimesLastYear: 3,
-  YearsInCurrentRole: 4, YearsSinceLastPromotion: 1,
+  Age: 32,
+  DailyRate: 800,
+  HourlyRate: 65,
+  MonthlyRate: 15000,
+
+  Department: 'Research & Development',
+  Gender: 'Male',
+  MonthlyIncome: 5000,
+  OverTime: 'No',
+  YearsAtCompany: 5,
+  WorkLifeBalance: 3,
+  JobSatisfaction: 3,
+  DistanceFromHome: 10,
+  JobRole: 'Research Scientist',
+  BusinessTravel: 'Travel_Rarely',
+  Education: 3,
+  EducationField: 'Life Sciences',
+  EnvironmentSatisfaction: 3,
+  JobInvolvement: 3,
+  JobLevel: 2,
+  MaritalStatus: 'Single',
+  NumCompaniesWorked: 1,
+  PercentSalaryHike: 14,
+  PerformanceRating: 3,
+  RelationshipSatisfaction: 3,
+  StockOptionLevel: 0,
+  TotalWorkingYears: 8,
+  TrainingTimesLastYear: 3,
+  YearsInCurrentRole: 4,
+  YearsSinceLastPromotion: 1,
   YearsWithCurrManager: 3,
 };
 
 const RISK_FACTORS_MAP = {
-  OverTime:       v => v === 'Yes' ? 'Working overtime' : null,
-  JobSatisfaction: v => v <= 2 ? 'Low job satisfaction (≤ 2)' : null,
-  MonthlyIncome:  v => v < 3000 ? 'Below-average compensation' : null,
-  YearsAtCompany: v => v < 3 ? 'Short tenure (< 3 years)' : null,
-  DistanceFromHome: v => v > 20 ? `Long commute (${v} km)` : null,
-  WorkLifeBalance: v => v <= 2 ? 'Poor work-life balance (≤ 2)' : null,
+  OverTime:                v => v === 'Yes' ? 'Working overtime' : null,
+  JobSatisfaction:         v => v <= 2 ? 'Low job satisfaction (≤ 2)' : null,
+  MonthlyIncome:           v => v < 3000 ? 'Below-average compensation' : null,
+  YearsAtCompany:          v => v < 3 ? 'Short tenure (< 3 years)' : null,
+  DistanceFromHome:        v => v > 20 ? `Long commute (${v} km)` : null,
+  WorkLifeBalance:         v => v <= 2 ? 'Poor work-life balance (≤ 2)' : null,
   EnvironmentSatisfaction: v => v <= 2 ? 'Low environment satisfaction' : null,
-  MaritalStatus:  v => v === 'Single' ? 'Single (higher mobility)' : null,
+  MaritalStatus:           v => v === 'Single' ? 'Single (higher mobility)' : null,
 };
 
 const TABS = ['Personal', 'Job & Satisfaction', 'Experience'];
@@ -176,6 +195,23 @@ const PredictForm = () => {
                 options={['Life Sciences', 'Medical', 'Marketing', 'Technical Degree', 'Human Resources', 'Other']} />
               <SliderField label="Education Level (1–5)" name="Education" min={1} max={5}
                 value={data.Education} onChange={update} />
+
+              {/* Step 2 Inputs */}
+              <div className="form-group">
+                <label>Daily Rate</label>
+                <input type="number" name="DailyRate" className="form-control"
+                  value={data.DailyRate} onChange={handleInput} />
+              </div>
+              <div className="form-group">
+                <label>Hourly Rate</label>
+                <input type="number" name="HourlyRate" className="form-control"
+                  value={data.HourlyRate} onChange={handleInput} />
+              </div>
+              <div className="form-group">
+                <label>Monthly Rate</label>
+                <input type="number" name="MonthlyRate" className="form-control"
+                  value={data.MonthlyRate} onChange={handleInput} />
+              </div>
             </div>
           )}
 
@@ -207,6 +243,10 @@ const PredictForm = () => {
                 value={data.WorkLifeBalance} onChange={update} />
               <SliderField label="Environment Satisfaction (1–4)" name="EnvironmentSatisfaction" min={1} max={4}
                 value={data.EnvironmentSatisfaction} onChange={update} />
+
+              {/* Step 3 Input */}
+              <SliderField label="Relationship Satisfaction (1–4)" name="RelationshipSatisfaction" min={1} max={4}
+                value={data.RelationshipSatisfaction} onChange={update} />
             </div>
           )}
 
