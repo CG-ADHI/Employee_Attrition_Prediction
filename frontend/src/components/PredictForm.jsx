@@ -108,7 +108,7 @@ const PredictForm = () => {
     e.preventDefault();
     setLoading(true); setError(null); setResult(null);
     try {
-      const res = await fetch('http://localhost:8000/api/predict', {
+      const res = await fetch('https://employee-attrition-prediction-4-1xie.onrender.com/api/predict', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
