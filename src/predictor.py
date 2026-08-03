@@ -4,6 +4,7 @@ import pandas as pd
 
 
 class AttritionPredictor:
+
     def __init__(self):
         base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -29,57 +30,99 @@ class AttritionPredictor:
             if col in df.columns:
                 df.drop(columns=col, inplace=True)
 
+        # -----------------------------
         # Binary Encoding
+        # -----------------------------
         if "Gender" in df.columns:
             df["Gender"] = df["Gender"].map({
-                "Male": 1,
-                "Female": 0
+                "Female": 0,
+                "Male": 1
             })
 
         if "OverTime" in df.columns:
             df["OverTime"] = df["OverTime"].map({
-                "Yes": 1,
-                "No": 0
+                "No": 0,
+                "Yes": 1
             })
 
-        # Create missing numerical columns
+        # -----------------------------
+        # Add Missing Numerical Columns
+        # -----------------------------
         for col in self.numerical_cols:
             if col not in df.columns:
                 df[col] = 0
 
-        # One Hot Encoding
-        categorical_cols = [
-            "BusinessTravel",
-            "Department",
-            "EducationField",
-            "JobRole",
-            "MaritalStatus"
-        ]
+        # -----------------------------
+        # Manual One-Hot Encoding
+        # -----------------------------
 
-        existing = [c for c in categorical_cols if c in df.columns]
+        mapping = {
 
-        df = pd.get_dummies(
-            df,
-            columns=existing,
-            drop_first=False
-        )
+            "BusinessTravel": [
+                "Travel_Frequently",
+                "Travel_Rarely"
+            ],
 
-        # Convert bool → int
-        bool_cols = df.select_dtypes(include=["bool"]).columns
-        df[bool_cols] = df[bool_cols].astype(int)
+            "Department": [
+                "Research & Development",
+                "Sales"
+            ],
 
-        # Add missing dummy columns
+            "EducationField": [
+                "Life Sciences",
+                "Marketing",
+                "Medical",
+                "Other",
+                "Technical Degree"
+            ],
+
+            "JobRole": [
+                "Human Resources",
+                "Laboratory Technician",
+                "Manager",
+                "Manufacturing Director",
+                "Research Director",
+                "Research Scientist",
+                "Sales Executive",
+                "Sales Representative"
+            ],
+
+            "MaritalStatus": [
+                "Married",
+                "Single"
+            ]
+        }
+
+        for column, categories in mapping.items():
+
+            value = ""
+
+            if column in df.columns:
+                value = str(df.loc[0, column])
+
+            for cat in categories:
+                df[f"{column}_{cat}"] = 1 if value == cat else 0
+
+            if column in df.columns:
+                df.drop(columns=[column], inplace=True)
+
+        # -----------------------------
+        # Ensure every training feature exists
+        # -----------------------------
         for col in self.features:
             if col not in df.columns:
                 df[col] = 0
 
-        # Keep only training columns
+        # Remove unwanted columns
         df = df[self.features]
 
-        # Scale
-        num_cols = [c for c in self.numerical_cols if c in df.columns]
+        # -----------------------------
+        # Scale Numerical Features
+        # -----------------------------
+        numerical = [c for c in self.numerical_cols if c in df.columns]
 
-        df[num_cols] = self.scaler.transform(df[num_cols])
+        if numerical:
+            df[numerical] = self.scaler.transform(df[numerical])
 
         return df
 
@@ -93,33 +136,30 @@ class AttritionPredictor:
 
         return int(prediction), float(probability)
 
-    def predict_batch(self, df):
+    def predict_batch(self, employees_df):
 
-        preds = []
-
-        probs = []
-
+        predictions = []
+        probabilities = []
         risks = []
 
-        for _, row in df.iterrows():
+        for _, row in employees_df.iterrows():
 
-            p, pr = self.predict(row.to_dict())
+            pred, prob = self.predict(row.to_dict())
 
-            preds.append(p)
+            predictions.append(pred)
+            probabilities.append(prob)
 
-            probs.append(pr)
-
-            if pr < 0.30:
+            if prob < 0.30:
                 risks.append("LOW")
-            elif pr < 0.60:
+            elif prob < 0.60:
                 risks.append("MEDIUM")
             else:
                 risks.append("HIGH")
 
-        result = df.copy()
+        result = employees_df.copy()
 
-        result["prediction"] = preds
-        result["probability"] = probs
+        result["prediction"] = predictions
+        result["probability"] = probabilities
         result["risk_level"] = risks
 
         return result
