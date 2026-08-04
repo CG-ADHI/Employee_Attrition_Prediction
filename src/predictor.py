@@ -17,114 +17,60 @@ class AttritionPredictor:
 
         df = pd.DataFrame([employee])
 
-        # Remove unused columns
+    # Remove unused columns
         drop_cols = [
             "EmployeeCount",
             "EmployeeNumber",
             "Over18",
             "StandardHours",
-            "Attrition"
-        ]
+            "Attrition",
+    ]
 
         for col in drop_cols:
             if col in df.columns:
-                df.drop(columns=col, inplace=True)
+                df.drop(columns=[col], inplace=True)
 
-        # -----------------------------
-        # Binary Encoding
-        # -----------------------------
-        if "Gender" in df.columns:
-            df["Gender"] = df["Gender"].map({
-                "Female": 0,
-                "Male": 1
-            })
+    # Binary encoding
+        df["Gender"] = 1 if employee.get("Gender") == "Male" else 0
+        df["OverTime"] = 1 if employee.get("OverTime") == "Yes" else 0
 
-        if "OverTime" in df.columns:
-            df["OverTime"] = df["OverTime"].map({
-                "No": 0,
-                "Yes": 1
-            })
+    # ---------- Create ALL model features ----------
+        X = pd.DataFrame(0, index=[0], columns=self.features)
 
-        # -----------------------------
-        # Add Missing Numerical Columns
-        # -----------------------------
+    # Numerical columns
         for col in self.numerical_cols:
-            if col not in df.columns:
-                df[col] = 0
+            if col in employee:
+                X.at[0, col] = employee[col]
 
-        # -----------------------------
-        # Manual One-Hot Encoding
-        # -----------------------------
+    # Binary columns
+        X.at[0, "Gender"] = df.at[0, "Gender"]
+        X.at[0, "OverTime"] = df.at[0, "OverTime"]
 
-        mapping = {
+    # One-hot encoded columns
+        bt = f"BusinessTravel_{employee.get('BusinessTravel')}"
+        if bt in X.columns:
+            X.at[0, bt] = 1
 
-            "BusinessTravel": [
-                "Travel_Frequently",
-                "Travel_Rarely"
-            ],
+        dep = f"Department_{employee.get('Department')}"
+        if dep in X.columns:
+            X.at[0, dep] = 1
 
-            "Department": [
-                "Research & Development",
-                "Sales"
-            ],
+        edu = f"EducationField_{employee.get('EducationField')}"
+        if edu in X.columns:
+            X.at[0, edu] = 1
 
-            "EducationField": [
-                "Life Sciences",
-                "Marketing",
-                "Medical",
-                "Other",
-                "Technical Degree"
-            ],
+        job = f"JobRole_{employee.get('JobRole')}"
+        if job in X.columns:
+            X.at[0, job] = 1
 
-            "JobRole": [
-                "Human Resources",
-                "Laboratory Technician",
-                "Manager",
-                "Manufacturing Director",
-                "Research Director",
-                "Research Scientist",
-                "Sales Executive",
-                "Sales Representative"
-            ],
+        mar = f"MaritalStatus_{employee.get('MaritalStatus')}"
+        if mar in X.columns:
+            X.at[0, mar] = 1
 
-            "MaritalStatus": [
-                "Married",
-                "Single"
-            ]
-        }
+        # Scale numerical columns
+        X[self.numerical_cols] = self.scaler.transform(X[self.numerical_cols])
 
-        for column, categories in mapping.items():
-
-            value = ""
-
-            if column in df.columns:
-                value = str(df.loc[0, column])
-
-            for cat in categories:
-                df[f"{column}_{cat}"] = 1 if value == cat else 0
-
-            if column in df.columns:
-                df.drop(columns=[column], inplace=True)
-
-        # -----------------------------
-        # Ensure every training feature exists
-        # -----------------------------
-        for col in self.features:
-            if col not in df.columns:
-                df[col] = 0
-
-        # Remove unwanted columns
-        df = df[self.features]
-
-        # -----------------------------
-        # Scale Numerical Features
-        # -----------------------------
-        numerical = [c for c in self.numerical_cols if c in df.columns]
-
-        if numerical:
-            df[numerical] = self.scaler.transform(df[numerical])
-
-        return df
+        return X
 
     def predict(self, employee):
 
