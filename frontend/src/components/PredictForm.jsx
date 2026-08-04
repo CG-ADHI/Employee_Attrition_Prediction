@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import { API_BASE_URL } from '../config';
 
 /* ── Risk Ring SVG ── */
 const RiskRing = ({ probability = 0, riskLevel = 'LOW' }) => {
@@ -127,7 +128,7 @@ const PredictForm = () => {
     e.preventDefault();
     setLoading(true); setError(null); setResult(null);
     try {
-      const res = await fetch('https://employee-attrition-prediction-4-1xie.onrender.com/api/predict', {
+      const res = await fetch(`${API_BASE_URL}/api/predict`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),

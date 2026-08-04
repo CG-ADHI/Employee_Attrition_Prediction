@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { API_BASE_URL } from '../config';
 import {
   AreaChart, Area, BarChart, Bar, PieChart, Pie, Cell,
   XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend
@@ -77,7 +78,7 @@ const Dashboard = () => {
   const [metrics, setMetrics] = useState({ total_employees: 1470, features: 35, models_deployed: 3 });
 
   useEffect(() => {
-    fetch("https://employee-attrition-prediction-4-1xie.onrender.com/api/dashboard")
+    fetch(`${API_BASE_URL}/api/dashboard`)
       .then(r => r.json())
       .then(d => { if (!d.error) setMetrics(d); })
       .catch(() => {});

@@ -67,8 +67,8 @@ class AttritionPredictor:
         if mar in X.columns:
             X.at[0, mar] = 1
 
-        # Scale numerical columns
-        X[self.numerical_cols] = self.scaler.transform(X[self.numerical_cols])
+        # Scale all columns
+        X = pd.DataFrame(self.scaler.transform(X), columns=self.features)
 
         return X
 
