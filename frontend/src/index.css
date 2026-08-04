@@ -5,57 +5,57 @@
 ═══════════════════════════════════════════════ */
 :root {
   /* Brand Colors */
-  --brand-blue:       #4F8EF7;
-  --brand-blue-dark:  #2563EB;
-  --brand-blue-glow:  rgba(79, 142, 247, 0.25);
-  --brand-cyan:       #22D3EE;
+  --brand-blue:       #2563EB;   /* Premium Royal Blue */
+  --brand-blue-dark:  #1D4ED8;
+  --brand-blue-glow:  rgba(37, 99, 235, 0.10);
+  --brand-cyan:       #06B6D4;
   --brand-emerald:    #10B981;
-  --brand-rose:       #F43F5E;
+  --brand-rose:       #EF4444;
   --brand-amber:      #F59E0B;
-  --brand-purple:     #A78BFA;
+  --brand-purple:     #8B5CF6;
 
-  /* Surface System */
-  --surface-0:  #09090B;   /* app background */
-  --surface-1:  #111115;   /* sidebar */
-  --surface-2:  #18181C;   /* cards */
-  --surface-3:  #222228;   /* elevated cards */
-  --surface-4:  #2C2C35;   /* inputs */
-  --surface-5:  #3A3A47;   /* hover states */
+  /* Surface System (Light Mode) */
+  --surface-0:  #F8FAFC;   /* App background: Clean slate slate-50 */
+  --surface-1:  #FFFFFF;   /* Sidebar: Pure white */
+  --surface-2:  #FFFFFF;   /* Cards: Pure white */
+  --surface-3:  #F1F5F9;   /* Elevated cards: slate-100 */
+  --surface-4:  #F8FAFC;   /* Inputs/inactive controls: slate-50 */
+  --surface-5:  #E2E8F0;   /* Hover states: slate-200 */
 
   /* Borders */
-  --border-1: rgba(255,255,255,0.06);
-  --border-2: rgba(255,255,255,0.10);
-  --border-3: rgba(255,255,255,0.14);
-  --border-accent: rgba(79, 142, 247, 0.35);
+  --border-1: #E2E8F0;     /* Slate-200 */
+  --border-2: #E2E8F0;
+  --border-3: #CBD5E1;     /* Slate-300 */
+  --border-accent: rgba(37, 99, 235, 0.20);
 
   /* Text */
-  --text-1:    #F4F4F5;   /* primary */
-  --text-2:    #A1A1AA;   /* secondary */
-  --text-3:    #71717A;   /* muted */
-  --text-4:    #52525B;   /* disabled */
+  --text-1:    #0F172A;   /* Slate-900 (Primary text) */
+  --text-2:    #475569;   /* Slate-600 (Secondary text) */
+  --text-3:    #64748B;   /* Slate-500 (Muted text) */
+  --text-4:    #94A3B8;   /* Slate-400 (Disabled/border text) */
 
-  /* Semantic */
+  /* Semantic Alerting */
   --success: #10B981;
-  --success-bg: rgba(16, 185, 129, 0.12);
-  --success-border: rgba(16, 185, 129, 0.3);
+  --success-bg: #ECFDF5;
+  --success-border: #A7F3D0;
   --warning: #F59E0B;
-  --warning-bg: rgba(245, 158, 11, 0.12);
-  --warning-border: rgba(245, 158, 11, 0.3);
-  --danger: #F43F5E;
-  --danger-bg: rgba(244, 63, 94, 0.12);
-  --danger-border: rgba(244, 63, 94, 0.3);
-  --info: #22D3EE;
-  --info-bg: rgba(34, 211, 238, 0.12);
-  --info-border: rgba(34, 211, 238, 0.3);
+  --warning-bg: #FFFBEB;
+  --warning-border: #FDE68A;
+  --danger: #EF4444;
+  --danger-bg: #FEF2F2;
+  --danger-border: #FCA5A5;
+  --info: #06B6D4;
+  --info-bg: #ECFEFF;
+  --info-border: #A5F3FC;
 
-  /* Shadows */
-  --shadow-sm:  0 1px 3px rgba(0,0,0,0.4);
-  --shadow-md:  0 4px 16px rgba(0,0,0,0.5);
-  --shadow-lg:  0 8px 32px rgba(0,0,0,0.6);
-  --shadow-xl:  0 20px 60px rgba(0,0,0,0.7);
-  --shadow-glow-blue: 0 0 24px rgba(79, 142, 247, 0.3);
-  --shadow-glow-rose: 0 0 24px rgba(244, 63, 94, 0.3);
-  --shadow-glow-green: 0 0 24px rgba(16, 185, 129, 0.3);
+  /* Shadows (Softer and clean for light mode) */
+  --shadow-sm:  0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md:  0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+  --shadow-lg:  0 10px 15px -3px rgba(0, 0, 0, 0.04), 0 4px 6px -4px rgba(0, 0, 0, 0.04);
+  --shadow-xl:  0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05);
+  --shadow-glow-blue: 0 0 16px rgba(37, 99, 235, 0.12);
+  --shadow-glow-rose: 0 0 16px rgba(239, 68, 68, 0.12);
+  --shadow-glow-green: 0 0 16px rgba(16, 185, 129, 0.12);
 
   /* Radii */
   --r-sm:  6px;
@@ -216,7 +216,7 @@ a:hover { text-decoration: underline; }
 }
 
 .nav-item.active {
-  background: linear-gradient(135deg, rgba(79,142,247,0.18) 0%, rgba(34,211,238,0.08) 100%);
+  background: var(--brand-blue-glow);
   color: var(--brand-blue);
   border: 1px solid var(--border-accent);
 }

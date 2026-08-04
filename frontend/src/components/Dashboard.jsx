@@ -122,37 +122,8 @@ const Dashboard = () => {
         />
       </div>
 
-      {/* Charts Row 1 */}
+      {/* Charts Row */}
       <div className="grid grid-2 mb-6">
-        {/* Attrition Trend */}
-        <div className="card">
-          <div className="card-header">
-            <div>
-              <div className="section-title">Attrition Rate Trend</div>
-              <div className="card-sub">Monthly attrition % — 2024</div>
-            </div>
-            <span className="badge badge-blue">Live</span>
-          </div>
-          <div className="chart-wrapper">
-            <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={ATTRITION_TREND} margin={{ top: 5, right: 10, left: -20, bottom: 0 }}>
-                <defs>
-                  <linearGradient id="gradBlue" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%"  stopColor="#4F8EF7" stopOpacity={0.3} />
-                    <stop offset="95%" stopColor="#4F8EF7" stopOpacity={0} />
-                  </linearGradient>
-                </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" vertical={false} />
-                <XAxis dataKey="month" stroke="var(--text-4)" tick={{ fontSize: 11 }} axisLine={false} tickLine={false} />
-                <YAxis stroke="var(--text-4)" tick={{ fontSize: 11 }} axisLine={false} tickLine={false} tickFormatter={v => `${v}%`} />
-                <Tooltip content={<CustomTooltip />} />
-                <Area type="monotone" dataKey="rate" name="rate" stroke="#4F8EF7" strokeWidth={2.5}
-                  fill="url(#gradBlue)" dot={{ fill: '#4F8EF7', r: 3 }} activeDot={{ r: 5, strokeWidth: 0 }} />
-              </AreaChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-
         {/* Risk Distribution Pie */}
         <div className="card flex flex-col">
           <div className="card-header">
@@ -189,35 +160,6 @@ const Dashboard = () => {
                 </div>
               ))}
             </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Charts Row 2 */}
-      <div className="grid grid-2 mb-6">
-        {/* Dept Risk */}
-        <div className="card">
-          <div className="card-header">
-            <div>
-              <div className="section-title">Department Risk Rate</div>
-              <div className="card-sub">Attrition % by department</div>
-            </div>
-          </div>
-          <div className="chart-wrapper-short">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={DEPT_BREAKDOWN} layout="vertical" margin={{ top: 0, right: 20, left: 0, bottom: 0 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" horizontal={false} />
-                <XAxis type="number" stroke="var(--text-4)" tick={{ fontSize: 11 }} axisLine={false} tickLine={false} tickFormatter={v => `${v}%`} />
-                <YAxis type="category" dataKey="dept" stroke="var(--text-4)" tick={{ fontSize: 11 }} axisLine={false} tickLine={false} width={45} />
-                <Tooltip content={<CustomTooltip />} />
-                <Bar dataKey="risk" name="Attrition %" fill="#4F8EF7" radius={[0, 4, 4, 0]} barSize={22}>
-                  {DEPT_BREAKDOWN.map((_, i) => {
-                    const colors = ['#F43F5E', '#4F8EF7', '#F59E0B'];
-                    return <Cell key={i} fill={colors[i]} />;
-                  })}
-                </Bar>
-              </BarChart>
-            </ResponsiveContainer>
           </div>
         </div>
 

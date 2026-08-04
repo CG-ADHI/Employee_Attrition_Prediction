@@ -99,7 +99,7 @@ const Analytics = () => {
         </div>
       </div>
 
-      {/* Row 1: Dept + Satisfaction */}
+      {/* Row 1: Dept Attrition + Overtime Impact */}
       <div className="grid grid-2 mb-6">
         {/* Dept Attrition */}
         <div className="card">
@@ -122,17 +122,17 @@ const Analytics = () => {
             <ResponsiveContainer width="100%" height="100%">
               {chartView === 'count' ? (
                 <BarChart data={DEPT_DATA} margin={{ top: 5, right: 10, left: -15, bottom: 0 }}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" vertical={false} />
+                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,0,0,0.05)" vertical={false} />
                   <XAxis dataKey="dept" stroke="var(--text-4)" tick={{ fontSize: 11 }} axisLine={false} tickLine={false} />
                   <YAxis stroke="var(--text-4)" tick={{ fontSize: 11 }} axisLine={false} tickLine={false} />
                   <Tooltip content={<CT />} />
                   <Legend iconSize={10} iconType="circle" wrapperStyle={{ fontSize: '0.75rem' }} />
-                  <Bar dataKey="stayed" name="Stayed" fill="#4F8EF7" radius={[4, 4, 0, 0]} barSize={30} />
-                  <Bar dataKey="left"   name="Left"   fill="#F43F5E" radius={[4, 4, 0, 0]} barSize={30} />
+                  <Bar dataKey="stayed" name="Stayed" fill="#2563EB" radius={[4, 4, 0, 0]} barSize={30} />
+                  <Bar dataKey="left"   name="Left"   fill="#EF4444" radius={[4, 4, 0, 0]} barSize={30} />
                 </BarChart>
               ) : (
                 <BarChart data={DEPT_DATA} margin={{ top: 5, right: 10, left: -15, bottom: 0 }}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" vertical={false} />
+                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,0,0,0.05)" vertical={false} />
                   <XAxis dataKey="dept" stroke="var(--text-4)" tick={{ fontSize: 11 }} axisLine={false} tickLine={false} />
                   <YAxis stroke="var(--text-4)" tick={{ fontSize: 11 }} axisLine={false} tickLine={false} tickFormatter={v => `${v}%`} domain={[0, 30]} />
                   <Tooltip content={<CT />} />
@@ -145,74 +145,80 @@ const Analytics = () => {
           </div>
         </div>
 
-        {/* Job Satisfaction */}
-        <div className="card">
-          <div className="card-header">
-            <div>
-              <div className="section-title">Job Satisfaction vs Attrition</div>
-              <div className="card-sub">Employees who left, grouped by satisfaction rating</div>
-            </div>
-          </div>
-          <div className="chart-wrapper">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={SATISFACTION} margin={{ top: 5, right: 10, left: -15, bottom: 0 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" vertical={false} />
-                <XAxis dataKey="rating" stroke="var(--text-4)" tick={{ fontSize: 10 }} axisLine={false} tickLine={false} />
-                <YAxis stroke="var(--text-4)" tick={{ fontSize: 11 }} axisLine={false} tickLine={false} />
-                <Tooltip content={<CT />} />
-                <Bar dataKey="attrition" name="Employees Left" radius={[4, 4, 0, 0]} barSize={36}>
-                  {SATISFACTION.map((d, i) => (
-                    <Cell key={i} fill={d.rating.startsWith('1') || d.rating.startsWith('2') ? '#F43F5E' : '#4F8EF7'} />
-                  ))}
-                </Bar>
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-      </div>
-
-      {/* Row 2: Overtime + Income */}
-      <div className="grid grid-2 mb-6">
         {/* Overtime Impact */}
-        <div className="card">
-          <div className="card-header">
-            <div>
-              <div className="section-title">OverTime Impact</div>
-              <div className="card-sub">Attrition rate: overtime vs non-overtime</div>
-            </div>
-            <span className="badge badge-red">High Correlation</span>
-          </div>
-          <div style={{ display: 'flex', gap: '1rem', marginTop: '0.5rem' }}>
-            {OVERTIME_DATA.map((d, i) => (
-              <div key={i} style={{
-                flex: 1, background: 'var(--surface-3)', borderRadius: 'var(--r-lg)',
-                padding: '1.25rem', border: '1px solid var(--border-1)', textAlign: 'center'
-              }}>
-                <div style={{ fontSize: '0.75rem', color: 'var(--text-3)', marginBottom: '0.5rem', fontWeight: 600 }}>
-                  {d.name}
-                </div>
-                <div style={{
-                  fontSize: '2rem', fontFamily: "'Space Grotesk', sans-serif", fontWeight: 800,
-                  color: d.rate > 20 ? 'var(--danger)' : 'var(--success)'
-                }}>
-                  {d.rate}%
-                </div>
-                <div style={{ fontSize: '0.75rem', color: 'var(--text-3)', marginTop: '0.35rem' }}>
-                  {d.employees.toLocaleString()} employees
-                </div>
-                <div className="progress-bar mt-2">
-                  <div className="progress-fill" style={{
-                    width: `${d.rate * 2}%`,
-                    background: d.rate > 20 ? 'var(--danger)' : 'var(--success)'
-                  }} />
-                </div>
+        <div className="card flex flex-col justify-between">
+          <div>
+            <div className="card-header">
+              <div>
+                <div className="section-title">OverTime Impact</div>
+                <div className="card-sub">Attrition rate: overtime vs non-overtime</div>
               </div>
-            ))}
+              <span className="badge badge-red">High Correlation</span>
+            </div>
+            <div style={{ display: 'flex', gap: '1rem', marginTop: '0.5rem' }}>
+              {OVERTIME_DATA.map((d, i) => (
+                <div key={i} style={{
+                  flex: 1, background: 'var(--surface-3)', borderRadius: 'var(--r-lg)',
+                  padding: '1.25rem', border: '1px solid var(--border-1)', textAlign: 'center'
+                }}>
+                  <div style={{ fontSize: '0.75rem', color: 'var(--text-3)', marginBottom: '0.5rem', fontWeight: 600 }}>
+                    {d.name}
+                  </div>
+                  <div style={{
+                    fontSize: '2rem', fontFamily: "'Space Grotesk', sans-serif", fontWeight: 800,
+                    color: d.rate > 20 ? 'var(--danger)' : 'var(--success)'
+                  }}>
+                    {d.rate}%
+                  </div>
+                  <div style={{ fontSize: '0.75rem', color: 'var(--text-3)', marginTop: '0.35rem' }}>
+                    {d.employees.toLocaleString()} employees
+                  </div>
+                  <div className="progress-bar mt-2">
+                    <div className="progress-fill" style={{
+                      width: `${d.rate * 2}%`,
+                      background: d.rate > 20 ? 'var(--danger)' : 'var(--success)'
+                    }} />
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
           <p className="text-muted text-sm mt-4" style={{ lineHeight: 1.6 }}>
             ⚡ Employees working overtime have a <strong style={{ color: 'var(--danger)' }}>3× higher attrition rate</strong> than those who don't.
             This is the single strongest predictor in the model.
           </p>
+        </div>
+      </div>
+
+      {/* Row 2: Job Role Attrition + Income Attrition */}
+      <div className="grid grid-2 mb-6">
+        {/* Job Role */}
+        <div className="card">
+          <div className="card-header">
+            <div>
+              <div className="section-title">Attrition Rate by Job Role</div>
+              <div className="card-sub">Ranked from highest to lowest attrition rate</div>
+            </div>
+          </div>
+          <div className="chart-wrapper">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart
+                data={ROLE_ATTRITION.slice().sort((a, b) => b.rate - a.rate)}
+                layout="vertical"
+                margin={{ top: 0, right: 20, left: 10, bottom: 0 }}
+              >
+                <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,0,0,0.05)" horizontal={false} vertical={true} />
+                <XAxis type="number" stroke="var(--text-4)" tick={{ fontSize: 10 }} axisLine={false} tickLine={false} tickFormatter={v => `${v}%`} domain={[0, 45]} />
+                <YAxis type="category" dataKey="role" stroke="var(--text-4)" tick={{ fontSize: 9 }} axisLine={false} tickLine={false} width={110} />
+                <Tooltip content={<CT />} />
+                <Bar dataKey="rate" name="Attrition %" radius={[0, 4, 4, 0]} barSize={12}>
+                  {ROLE_ATTRITION.slice().sort((a, b) => b.rate - a.rate).map((d, i) => (
+                    <Cell key={i} fill={d.rate > 25 ? 'var(--danger)' : d.rate > 15 ? 'var(--warning)' : 'var(--brand-blue)'} />
+                  ))}
+                </Bar>
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
         </div>
 
         {/* Income vs Attrition */}
@@ -226,7 +232,7 @@ const Analytics = () => {
           <div className="chart-wrapper">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={INCOME_BANDS} margin={{ top: 5, right: 10, left: -15, bottom: 0 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" vertical={false} />
+                <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,0,0,0.05)" vertical={false} />
                 <XAxis dataKey="band" stroke="var(--text-4)" tick={{ fontSize: 10 }} axisLine={false} tickLine={false} />
                 <YAxis stroke="var(--text-4)" tick={{ fontSize: 11 }} axisLine={false} tickLine={false} tickFormatter={v => `${v}%`} />
                 <Tooltip content={<CT />} />
@@ -235,85 +241,6 @@ const Analytics = () => {
               </LineChart>
             </ResponsiveContainer>
           </div>
-        </div>
-      </div>
-
-      {/* Row 3: Tenure + Radar */}
-      <div className="grid grid-2 mb-6">
-        {/* Tenure */}
-        <div className="card">
-          <div className="card-header">
-            <div>
-              <div className="section-title">Tenure vs Attrition Rate</div>
-              <div className="card-sub">Years at company groups</div>
-            </div>
-          </div>
-          <div className="chart-wrapper">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={TENURE_DATA} margin={{ top: 5, right: 10, left: -15, bottom: 0 }}>
-                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" vertical={false} />
-                <XAxis dataKey="years" stroke="var(--text-4)" tick={{ fontSize: 11 }} axisLine={false} tickLine={false} />
-                <YAxis stroke="var(--text-4)" tick={{ fontSize: 11 }} axisLine={false} tickLine={false} tickFormatter={v => `${v}%`} />
-                <Tooltip content={<CT />} />
-                <Bar dataKey="rate" name="Attrition %" radius={[4, 4, 0, 0]} barSize={40}>
-                  {TENURE_DATA.map((d, i) => (
-                    <Cell key={i} fill={d.rate > 25 ? '#F43F5E' : d.rate > 15 ? '#F59E0B' : '#10B981'} />
-                  ))}
-                </Bar>
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-
-        {/* Radar */}
-        <div className="card">
-          <div className="card-header">
-            <div>
-              <div className="section-title">Satisfaction Comparison</div>
-              <div className="card-sub">Stayed vs Left — satisfaction dimensions</div>
-            </div>
-          </div>
-          <div className="chart-wrapper">
-            <ResponsiveContainer width="100%" height="100%">
-              <RadarChart data={RADAR_DATA}>
-                <PolarGrid stroke="rgba(255,255,255,0.08)" />
-                <PolarAngleAxis dataKey="subject" tick={{ fontSize: 10, fill: 'var(--text-3)' }} />
-                <Radar name="Stayed" dataKey="A" stroke="#4F8EF7" fill="#4F8EF7" fillOpacity={0.2} strokeWidth={2} />
-                <Radar name="Left"   dataKey="B" stroke="#F43F5E" fill="#F43F5E" fillOpacity={0.15} strokeWidth={2} />
-                <Legend iconSize={10} iconType="circle" wrapperStyle={{ fontSize: '0.75rem' }} />
-                <Tooltip content={<CT />} />
-              </RadarChart>
-            </ResponsiveContainer>
-          </div>
-        </div>
-      </div>
-
-      {/* Row 4: Job Role */}
-      <div className="card mb-6">
-        <div className="card-header">
-          <div>
-            <div className="section-title">Attrition Rate by Job Role</div>
-            <div className="card-sub">Ranked from highest to lowest attrition rate</div>
-          </div>
-        </div>
-        <div className="chart-wrapper-tall">
-          <ResponsiveContainer width="100%" height="100%">
-            <BarChart
-              data={ROLE_ATTRITION.slice().sort((a, b) => b.rate - a.rate)}
-              layout="vertical"
-              margin={{ top: 0, right: 40, left: 0, bottom: 0 }}
-            >
-              <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.05)" horizontal={false} />
-              <XAxis type="number" stroke="var(--text-4)" tick={{ fontSize: 11 }} axisLine={false} tickLine={false} tickFormatter={v => `${v}%`} domain={[0, 45]} />
-              <YAxis type="category" dataKey="role" stroke="var(--text-4)" tick={{ fontSize: 11 }} axisLine={false} tickLine={false} width={130} />
-              <Tooltip content={<CT />} />
-              <Bar dataKey="rate" name="Attrition %" radius={[0, 4, 4, 0]} barSize={18}>
-                {ROLE_ATTRITION.slice().sort((a, b) => b.rate - a.rate).map((d, i) => (
-                  <Cell key={i} fill={d.rate > 25 ? '#F43F5E' : d.rate > 15 ? '#F59E0B' : '#10B981'} />
-                ))}
-              </Bar>
-            </BarChart>
-          </ResponsiveContainer>
         </div>
       </div>
 

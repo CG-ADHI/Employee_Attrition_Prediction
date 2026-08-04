@@ -4,7 +4,6 @@ import Dashboard   from './components/Dashboard';
 import PredictForm from './components/PredictForm';
 import Analytics   from './components/Analytics';
 import Watchlist   from './components/Watchlist';
-import Login       from './components/Login';
 
 /* ── SVG Icon helpers ─────────────────────── */
 const Icon = ({ d, size = 18 }) => (
@@ -30,10 +29,7 @@ const PAGE_META = {
 };
 
 function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [activeTab, setActiveTab]   = useState('dashboard');
-
-  if (!isLoggedIn) return <Login onLogin={setIsLoggedIn} />;
 
   const meta = PAGE_META[activeTab];
 
@@ -74,15 +70,12 @@ function App() {
 
         {/* Footer User Block */}
         <div className="sidebar-footer">
-          <div className="sidebar-user" onClick={() => setIsLoggedIn(false)} title="Sign out">
+          <div className="sidebar-user">
             <div className="sidebar-avatar">HR</div>
             <div className="sidebar-user-info">
               <div className="sidebar-user-name">Admin User</div>
-              <div className="sidebar-user-role">HR Analyst · Sign out</div>
+              <div className="sidebar-user-role">HR Analyst</div>
             </div>
-            <span style={{ color: 'var(--text-4)', flexShrink: 0 }}>
-              <Icon d={ICONS.logout} size={15} />
-            </span>
           </div>
         </div>
       </aside>
